@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PaginateRequest;
 use App\Http\Resources\Product\ProductsWithRemainResource;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductController extends Controller
@@ -14,6 +13,6 @@ class ProductController extends Controller
     {
         $data = $request->validated();
 
-        return ProductsWithRemainResource::make(Product::query()->paginate($data->per_page ?? null));
+        return ProductsWithRemainResource::collection(Product::query()->with('stock')->paginate($data->per_page ?? null));
     }
 }
